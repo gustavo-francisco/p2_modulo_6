@@ -12,6 +12,11 @@ if not video_capture.isOpened():
     print("Error opening video file")
     exit(1)
 
+width  = int(video_capture.get(cv2.CAP_PROP_FRAME_WIDTH))  
+height = int(video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+output_video = cv2.VideoWriter( './video_alterado.avi',cv2.VideoWriter_fourcc(*'DIVX'), 24, (width, height))
+
 def detectAndDisplay(frame):
     frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     frame_gray = cv2.equalizeHist(frame_gray)
@@ -56,6 +61,10 @@ while True:
         break
 
     detectAndDisplay(frame)
+
+    video_final = detectAndDisplay(frame)
+
+    output_video.write(video_final)
 
     if cv2.waitKey(30) & 0xFF == ord('q'):
         break
